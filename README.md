@@ -1,26 +1,17 @@
-Project 3: Tomasulo
+# Tomasulo Out-of-Order Pipeline Simulator
 
-測試input資料
+A cycle-by-cycle C++ simulator of **Tomasulo's algorithm**, written for a Computer Organization course (Spring 2022).
 
-ADDI F1, F2, 1
+## What it models
+- **5 reservation stations** feeding two functional units: ADD/SUB (also `ADDI`) and MUL/DIV
+- **Register Alias Table (RAT)** for register renaming over registers F1–F5
+- **Issue → Execute → Write-back** with per-operation latencies: ADD/SUB 2 cycles, MUL 10, DIV 40
+- **Result broadcast**: when a unit finishes, its value is forwarded to every reservation station waiting on it and the RAT entry is cleared
+- RAW hazards are resolved by waiting on tags, and WAR / WAW hazards by renaming
 
-SUB F1, F3, F4
-
-DIV F1, F2, F3
-
-MUL F2, F3, F4
-
-ADD F2, F4, F2
-
-ADDI F4, F1, 2
-
-MUL F5, F5, F5
-
-ADD F1, F4, F4
-
-![螢幕擷取畫面 2022-06-17 144557](https://user-images.githubusercontent.com/69074874/174241431-3af422be-277f-49a2-9898-d71d7f38e667.png)
-
-![螢幕擷取畫面 2022-06-17 144542](https://user-images.githubusercontent.com/69074874/174241436-aeee4201-505f-4caf-b011-accca2ed4185.png)
-
-![螢幕擷取畫面 2022-06-17 144612](https://user-images.githubusercontent.com/69074874/174241438-56428f3f-cb05-4ea6-9cb9-4fa6033abc16.png)
-
+## Run
+```bash
+g++ -std=c++17 -o tomasulo 1093343prog3.cpp
+./tomasulo < input.txt
+```
+The program prints the register file, RAT, and reservation-station contents as the simulation advances.
